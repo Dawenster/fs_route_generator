@@ -5,9 +5,14 @@ gem 'jbuilder', '~> 1.2'
 gem 'jquery-rails'
 gem 'pg'
 gem 'rails', '4.0.0'
+gem 'rest-client'
 gem 'sass-rails', '~> 4.0.0'
 gem 'turbolinks'
 gem 'uglifier', '>= 1.3.0'
+
+group :development do
+  gem 'pry'
+end
 
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
