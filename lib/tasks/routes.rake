@@ -15,9 +15,72 @@ task :routes_to_scrape, [:origin_code, :destination_code]  => :environment  do |
   origin = Airport.find_by_code(args.origin_code)
   actual_destination = Airport.find_by_code(args.destination_code)
 
-  possible_destinations(actual_destination)
+  results = hit_matrix(origin.code, "", actual_destination.code, "2013-12-15")
+  results.first(100).each do |flight|
+    create_flight(flight, origin.code, actual_destination.code, "original")
+  end
 
-  hit_matrix(origin.code, "", actual_destination.code, "2013-12-04")
+  results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), "2013-12-15")
+  results.first(100).each do |flight|
+    create_flight(flight, origin.code, actual_destination.code, "shortcut")
+  end
+
+  calculate_shortcuts(origin.code, actual_destination.code)
+end
+
+def create_flight(flight, origin, actual_destination, type)
+  if type == "original" && flight["itinerary"]["slices"][0]["stops"] == nil
+    Flight.create(
+      :departure_time => DateTime.strptime(flight["itinerary"]["slices"][0]["departure"], '%Y-%m-%dT%H:%M%z'),
+      :departure_code => origin,
+      :stop_code => nil,
+      :arrival_code => actual_destination,
+      :flight_no => flight["itinerary"]["slices"][0]["flights"][0],
+      :price => (flight["ext"]["totalPrice"][3..-1].to_f * 100).to_i,
+      :stops => 0
+    )
+  elsif type == "shortcut" && flight["itinerary"]["slices"][0]["stops"].count == 1
+    price = 
+    Flight.create(
+      :departure_time => DateTime.strptime(flight["itinerary"]["slices"][0]["departure"], '%Y-%m-%dT%H:%M%z'),
+      :departure_code => origin,
+      :stop_code => actual_destination,
+      :arrival_code => flight["itinerary"]["slices"][0]["destination"]["code"],
+      :flight_no => flight["itinerary"]["slices"][0]["flights"][0],
+      :price => (flight["ext"]["totalPrice"][3..-1].to_f * 100).to_i,
+      :stops => 1
+    )
+  end
+end
+
+def calculate_shortcuts(origin_code, destination_code)
+  all_flights = Flight.all
+  non_stop_flights = Flight.where(:stops => 0)
+  one_stop_flights = Flight.where(:stops => 1)
+  shortcuts = []
+
+  non_stop_flights.each do |flight|
+    similar_flights = all_flights.select { |all_flight| all_flight.flight_no == flight.flight_no && all_flight.departure_time == flight.departure_time }
+    similar_flights = similar_flights.sort_by { |flight| flight.price }
+
+    cheapest_flight = similar_flights.first
+    non_stop_flight = similar_flights.find {|f| f.stops == 0 }
+
+    if non_stop_flight && cheapest_flight.price < (non_stop_flight.price - 2000) && cheapest_flight.stops == 1
+      puts "WIN!!"
+      puts "#{cheapest_flight.departure_code}-#{cheapest_flight.arrival_code}"
+      shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code]
+    end
+  end
+  write_to_csv(shortcuts, origin_code, destination_code)
+end
+
+def write_to_csv(shortcuts, origin_code, destination_code)
+  CSV.open("db/routes/#{origin_code}-#{destination_code}.csv", "wb") do |csv|
+    shortcuts.uniq.each do |shortcut|
+      csv << shortcut
+    end
+  end
 end
 
 def hit_matrix(origin, transfer, destination, date)
@@ -26,7 +89,7 @@ def hit_matrix(origin, transfer, destination, date)
     'slices' => [{
       'origins':[#{origin}],
       'originPreferCity':true,
-      #{format_transfer_city(transfer)}destinations:[#{destination}],
+      #{format_transfer_city(transfer)}'destinations':[#{destination}],
       'destinationPreferCity':false,
       'date':#{date},
       'isArrivalDate':false,
@@ -50,33 +113,33 @@ def hit_matrix(origin, transfer, destination, date)
     "name" => "specificDates"
   }
 
-  search_result = RestClient.get(url, :params => params )
+  search_result = RestClient.post(url, params, header)
   search_result[0..3] = ""
-  result = JSON.parse(search_result)
-  puts result["result"]["id"]
+  JSON.parse(search_result)["result"]["solutionList"]["solutions"]
 end
 
 def possible_destinations(destination)
+  degrees = 30
   destinations = Airport.where(
     "latitude >= ? AND latitude <= ? AND longitude >= ? AND longitude <= ?",
-    destination.latitude - 30, destination.latitude + 30, destination.longitude - 30, destination.longitude + 30
+    destination.latitude - degrees, destination.latitude + degrees, destination.longitude - degrees, destination.longitude + degrees
   )
-  return destinations.map{ |d| d.code }.join(", ")
+  return destinations.map{ |d| "'#{d.code}'" }.join(",")
 end
 
 def format_transfer_city(city)
   return "" if city.blank?
-  return "X:#{},"
+  return "'routeLanguage':'X:#{city}',"
 end
 
-# def header
-#   return {
-#     :content_type => :json,
-#     "Connection" => "keep-alive",
-#     "Accept" => "*/*",
-#     "Accept-Charset" => "ISO-8859-1,utf-8;q=0.7,*;q=0.3",
-#     "Accept-Language" => "en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,en-CA;q=0.2",
-#     "Cookie" => "PREF=\"ID=0\"",
-#     "DNT" => "1"
-#   }
-# end
+def header
+  return {
+    :content_type => :json,
+    "Connection" => "keep-alive",
+    "Accept" => "*/*",
+    "Accept-Charset" => "ISO-8859-1,utf-8;q=0.7,*;q=0.3",
+    "Accept-Language" => "en-US,en;q=0.8,zh-TW;q=0.6,zh;q=0.4,en-CA;q=0.2",
+    "Cookie" => "PREF=\"ID=0\"",
+    "DNT" => "1"
+  }
+end
