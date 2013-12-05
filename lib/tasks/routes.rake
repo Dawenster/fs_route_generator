@@ -12,20 +12,41 @@ task :create_airports => :environment do
 end
 
 task :routes_to_scrape, [:origin_code, :destination_code]  => :environment  do |t, args|
+  start_time = Time.now
   origin = Airport.find_by_code(args.origin_code)
   actual_destination = Airport.find_by_code(args.destination_code)
 
-  results = hit_matrix(origin.code, "", actual_destination.code, "2013-12-15")
-  results.first(100).each do |flight|
-    create_flight(flight, origin.code, actual_destination.code, "original")
+  num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+  date_array = []
+  shortcuts = []
+  num_days.each do |num|
+    date_array << (Time.now + num.days).strftime("%Y-%m-%d")
   end
 
-  results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), "2013-12-15")
-  results.first(100).each do |flight|
-    create_flight(flight, origin.code, actual_destination.code, "shortcut")
-  end
+  date_array.each_with_index do |date, i|
+    puts "*" * 100
+    puts "Scraping #{date} (#{i + 1} / #{num_days.size})"
 
-  calculate_shortcuts(origin.code, actual_destination.code)
+    results = hit_matrix(origin.code, "", actual_destination.code, date)
+    results.first(100).each do |flight|
+      create_flight(flight, origin.code, actual_destination.code, "original")
+    end
+
+    results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), date)
+    results.first(100).each do |flight|
+      create_flight(flight, origin.code, actual_destination.code, "shortcut")
+    end
+
+    puts "Calculating shortcuts"
+    shortcuts += calculate_shortcuts(origin.code, actual_destination.code)
+    Flight.destroy_all
+  end
+  puts "Writing to CSV"
+  write_to_csv(shortcuts, origin.code, actual_destination.code)
+
+  time = (Time.now - start_time).to_i
+  puts "*" * 100
+  puts "Total time: #{time / 60} minutes, #{time % 60} seconds"
 end
 
 def create_flight(flight, origin, actual_destination, type)
@@ -67,12 +88,11 @@ def calculate_shortcuts(origin_code, destination_code)
     non_stop_flight = similar_flights.find {|f| f.stops == 0 }
 
     if non_stop_flight && cheapest_flight.price < (non_stop_flight.price - 2000) && cheapest_flight.stops == 1
-      puts "WIN!!"
       puts "#{cheapest_flight.departure_code}-#{cheapest_flight.arrival_code}"
       shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code]
     end
   end
-  write_to_csv(shortcuts, origin_code, destination_code)
+  shortcuts
 end
 
 def write_to_csv(shortcuts, origin_code, destination_code)
