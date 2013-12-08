@@ -97,6 +97,7 @@ end
 
 def write_to_csv(shortcuts, origin_code, destination_code)
   CSV.open("db/routes/#{origin_code}-#{destination_code}.csv", "wb") do |csv|
+    csv << [origin_code, destination_code]
     shortcuts.uniq.each do |shortcut|
       csv << shortcut
     end
