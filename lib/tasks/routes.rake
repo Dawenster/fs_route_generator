@@ -16,7 +16,8 @@ task :routes_to_scrape, [:origin_code, :destination_code]  => :environment  do |
   origin = Airport.find_by_code(args.origin_code)
   actual_destination = Airport.find_by_code(args.destination_code)
 
-  num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+  # num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+  num_days = [5]
   date_array = []
   shortcuts = []
   num_days.each do |num|
@@ -89,7 +90,7 @@ def calculate_shortcuts(origin_code, destination_code)
 
     if non_stop_flight && cheapest_flight.price < (non_stop_flight.price - 2000) && cheapest_flight.stops == 1
       puts "#{cheapest_flight.departure_code}-#{cheapest_flight.arrival_code}"
-      shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code]
+      shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code, cheapest_flight.price]
     end
   end
   shortcuts
