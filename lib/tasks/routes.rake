@@ -16,8 +16,7 @@ task :routes_to_scrape, [:origin_code, :destination_code]  => :environment  do |
   origin = Airport.find_by_code(args.origin_code)
   actual_destination = Airport.find_by_code(args.destination_code)
 
-  # num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-  num_days = [5]
+  num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
   date_array = []
   shortcuts = []
   num_days.each do |num|
