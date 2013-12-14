@@ -9,6 +9,6 @@ task :ping => :environment do
     "YYZ"
   ]
   current_airports.each do |airport_code|
-    RestClient.get "http://fs-#{airport_code.downcase}-api/routes_to_scrape"
+    RestClient.get "http://fs-#{airport_code.downcase}-api.herokuapp.com/routes_to_scrape"
   end
 end
