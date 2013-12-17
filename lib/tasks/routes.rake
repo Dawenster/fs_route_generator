@@ -11,42 +11,69 @@ task :create_airports => :environment do
   end
 end
 
-task :routes_to_scrape, [:origin_code, :destination_code]  => :environment  do |t, args|
+task :routes_to_scrape, [:origin_code]  => :environment  do |t, args|
   start_time = Time.now
+
+  current_airports = [
+    "JFK",
+    "LAX",
+    "ORD",
+    "SFO",
+    "YVR",
+    "YYC",
+    "YYZ"
+  ]
   origin = Airport.find_by_code(args.origin_code)
-  actual_destination = Airport.find_by_code(args.destination_code)
 
-  num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
-  date_array = []
-  shortcuts = []
-  num_days.each do |num|
-    date_array << (Time.now + num.days).strftime("%Y-%m-%d")
+  current_airports.each do |destination_code|
+    actual_destination = Airport.find_by_code(destination_code)
+    date_array = dates_to_scrape
+    num_days_count = date_array.size
+    get_shortcuts(date_array, origin, actual_destination, num_days_count)
+    get_shortcuts(date_array, actual_destination, origin, num_days_count)
   end
-
-  date_array.each_with_index do |date, i|
-    puts "*" * 100
-    puts "Scraping #{date} (#{i + 1} / #{num_days.size})"
-
-    results = hit_matrix(origin.code, "", actual_destination.code, date)
-    results.first(100).each do |flight|
-      create_flight(flight, origin.code, actual_destination.code, "original")
-    end
-
-    results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), date)
-    results.first(100).each do |flight|
-      create_flight(flight, origin.code, actual_destination.code, "shortcut")
-    end
-
-    puts "Calculating shortcuts"
-    shortcuts += calculate_shortcuts(origin.code, actual_destination.code)
-    Flight.destroy_all
-  end
-  puts "Writing to CSV"
-  write_to_csv(shortcuts, origin.code, actual_destination.code)
 
   time = (Time.now - start_time).to_i
   puts "*" * 100
   puts "Total time: #{time / 60} minutes, #{time % 60} seconds"
+end
+
+def dates_to_scrape
+  date_array = []
+  num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
+  num_days.each do |num|
+    date_array << (Time.now + num.days).strftime("%Y-%m-%d")
+  end
+  return date_array
+end
+
+def get_shortcuts(date_array, origin, actual_destination, num_days_count)
+  shortcuts = []
+  date_array.each_with_index do |date, i|
+    puts "*" * 100
+    puts "Scraping #{origin.code}-#{actual_destination.code} #{date} (#{i + 1} / #{num_days_count})"
+
+    results = hit_matrix(origin.code, "", actual_destination.code, date)
+    if results
+      results.first(100).each do |flight|
+        create_flight(flight, origin.code, actual_destination.code, "original")
+      end
+    end
+
+    results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), date)
+    if results
+      results.first(100).each do |flight|
+        create_flight(flight, origin.code, actual_destination.code, "shortcut")
+      end
+    end
+
+    puts "Routes with shortcuts"
+    shortcuts += calculate_shortcuts(origin.code, actual_destination.code)
+    puts "No shortcuts found" if shortcuts.empty?
+    Flight.destroy_all
+  end
+  puts "Writing to CSV"
+  write_to_csv(shortcuts, origin.code, actual_destination.code)
 end
 
 def create_flight(flight, origin, actual_destination, type)
