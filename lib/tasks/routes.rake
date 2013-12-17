@@ -89,7 +89,8 @@ def calculate_shortcuts(origin_code, destination_code)
 
     if non_stop_flight && cheapest_flight.price < (non_stop_flight.price - 2000) && cheapest_flight.stops == 1
       puts "#{cheapest_flight.departure_code}-#{cheapest_flight.arrival_code}"
-      shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code, cheapest_flight.price]
+      # shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code, cheapest_flight.price]
+      shortcuts << [cheapest_flight.departure_code, cheapest_flight.arrival_code]
     end
   end
   shortcuts
