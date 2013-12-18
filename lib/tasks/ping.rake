@@ -5,6 +5,7 @@ task :ping => :environment do
     "BOS",
     "JFK",
     "LAX",
+    "LGA",
     "ORD",
     "SFO",
     "YVR",
