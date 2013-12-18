@@ -39,6 +39,21 @@ task :routes_to_scrape, [:origin_code]  => :environment  do |t, args|
   puts "Total time: #{time / 60} minutes, #{time % 60} seconds"
 end
 
+task :two_city_scrape, [:origin_code, :destination_code]  => :environment  do |t, args|
+  start_time = Time.now
+
+  origin = Airport.find_by_code(args.origin_code)
+  actual_destination = Airport.find_by_code(args.destination_code)
+
+  date_array = dates_to_scrape
+  num_days_count = date_array.size
+  get_shortcuts(date_array, origin, actual_destination, num_days_count)
+
+  time = (Time.now - start_time).to_i
+  puts "*" * 100
+  puts "Total time: #{time / 60} minutes, #{time % 60} seconds"
+end
+
 def dates_to_scrape
   date_array = []
   num_days = [1, 2, 3, 5, 7, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60]
