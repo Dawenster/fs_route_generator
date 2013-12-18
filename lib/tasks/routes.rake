@@ -71,9 +71,9 @@ def get_shortcuts(date_array, origin, actual_destination, num_days_count)
     shortcuts += calculate_shortcuts(origin.code, actual_destination.code)
     puts "No shortcuts found" if shortcuts.empty?
     Flight.destroy_all
-    sleep 10
   end
   puts "Writing to CSV"
+  sleep 10
   write_to_csv(shortcuts, origin.code, actual_destination.code)
 end
 
