@@ -71,6 +71,7 @@ def get_shortcuts(date_array, origin, actual_destination, num_days_count)
     shortcuts += calculate_shortcuts(origin.code, actual_destination.code)
     puts "No shortcuts found" if shortcuts.empty?
     Flight.destroy_all
+    sleep 10
   end
   puts "Writing to CSV"
   write_to_csv(shortcuts, origin.code, actual_destination.code)
@@ -124,7 +125,7 @@ def calculate_shortcuts(origin_code, destination_code)
 end
 
 def write_to_csv(shortcuts, origin_code, destination_code)
-  CSV.open("db/routes/#{origin_code}-#{destination_code}.csv", "wb") do |csv|
+  CSV.open("db/routes/#{origin_code}/#{origin_code}-#{destination_code}.csv", "wb") do |csv|
     csv << [origin_code, destination_code]
     shortcuts.uniq.each do |shortcut|
       csv << shortcut
