@@ -53,18 +53,26 @@ def get_shortcuts(date_array, origin, actual_destination, num_days_count)
     puts "*" * 100
     puts "Scraping #{origin.code}-#{actual_destination.code} #{date} (#{i + 1} / #{num_days_count})"
 
-    results = hit_matrix(origin.code, "", actual_destination.code, date)
-    if results
-      results.first(100).each do |flight|
-        create_flight(flight, origin.code, actual_destination.code, "original")
+    begin
+      results = hit_matrix(origin.code, "", actual_destination.code, date)
+      if results
+        results.first(100).each do |flight|
+          create_flight(flight, origin.code, actual_destination.code, "original")
+        end
       end
+    rescue
+      puts "%%% WTF! ERROR OCCURED! %%%"
     end
 
-    results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), date)
-    if results
-      results.first(100).each do |flight|
-        create_flight(flight, origin.code, actual_destination.code, "shortcut")
+    begin
+      results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), date)
+      if results
+        results.first(100).each do |flight|
+          create_flight(flight, origin.code, actual_destination.code, "shortcut")
+        end
       end
+    rescue
+      puts "%%% WTF! ERROR OCCURED! %%%"
     end
 
     puts "Routes with shortcuts"
@@ -73,7 +81,6 @@ def get_shortcuts(date_array, origin, actual_destination, num_days_count)
     Flight.destroy_all
   end
   puts "Writing to CSV"
-  sleep 10
   write_to_csv(shortcuts, origin.code, actual_destination.code)
 end
 
