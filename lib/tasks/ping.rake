@@ -8,6 +8,7 @@ task :ping => :environment do
     "LGA",
     "MIA",
     "ORD",
+    "PHX",
     "SFO",
     "YVR",
     "YYC",
