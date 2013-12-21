@@ -2,6 +2,7 @@ require 'rest_client'
 
 task :ping => :environment do
   current_airports = [
+    "ATL",
     "BOS",
     "IAH",
     "JFK",

@@ -15,6 +15,7 @@ task :routes_to_scrape, [:origin_code]  => :environment  do |t, args|
   start_time = Time.now
 
   current_airports = [
+    "ATL",
     "BOS",
     "IAH",
     "JFK",
