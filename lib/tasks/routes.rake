@@ -22,6 +22,7 @@ task :routes_to_scrape, [:origin_code]  => :environment  do |t, args|
     "MIA",
     "ORD",
     "PHX",
+    "SEA",
     "SFO",
     "YVR",
     "YYC",
