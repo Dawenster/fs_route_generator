@@ -55,6 +55,7 @@ task :two_city_scrape, [:origin_code, :destination_code]  => :environment  do |t
   date_array = dates_to_scrape
   num_days_count = date_array.size
   get_shortcuts(date_array, origin, actual_destination, num_days_count)
+  get_shortcuts(date_array, actual_destination, origin, num_days_count)
 
   time = (Time.now - start_time).to_i
   puts "*" * 100
