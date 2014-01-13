@@ -4,6 +4,7 @@ task :ping => :environment do
   current_airports = [
     "ATL",
     "BOS",
+    "DFW",
     "DTW",
     "EWR",
     "IAH",
