@@ -19,6 +19,7 @@ task :ping => :environment do
     "PHX",
     "SEA",
     "SFO",
+    "SJC",
     "YVR",
     "YYC",
     "YYZ"
