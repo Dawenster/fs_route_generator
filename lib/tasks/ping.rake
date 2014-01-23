@@ -13,6 +13,7 @@ task :ping => :environment do
     "LAS",
     "LAX",
     "LGA",
+    "LGB",
     "MIA",
     "OAK",
     "ORD",
