@@ -9,6 +9,7 @@ task :ping => :environment do
     "DFW",
     "DTW",
     "EWR",
+    "IAD",
     "IAH",
     "JFK",
     "LAS",
