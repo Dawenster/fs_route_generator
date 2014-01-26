@@ -5,6 +5,7 @@ task :ping => :environment do
     "ATL",
     "BOS",
     "BWI",
+    "DCA",
     "DEN",
     "DFW",
     "DTW",
