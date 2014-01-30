@@ -11,7 +11,7 @@ task :create_airports => :environment do
   end
 end
 
-task :routes_to_scrape, [:origin_code]  => :environment  do |t, args|
+task :routes_to_scrape, [:origin_code] => :environment do |t, args|
   start_time = Time.now
 
   current_airports = [
