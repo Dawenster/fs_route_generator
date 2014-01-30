@@ -12,6 +12,8 @@ gem 'uglifier', '>= 1.3.0'
 
 group :development do
   gem 'pry'
+  gem 'capybara'
+  gem 'selenium-webdriver', '~> 2.39.0'
 end
 
 group :doc do
