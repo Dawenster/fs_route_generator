@@ -30,6 +30,7 @@ task :routes_to_scrape, [:origin_code] => :environment do |t, args|
     "LAX",
     "LGA",
     "LGB",
+    "MDW",
     "MIA",
     "OAK",
     "ORD",
