@@ -39,8 +39,9 @@ def scrape_prices(csv, starting_num)
   count = starting_num
   all(".GAJ4KBDCENC").each_with_index do |ele, i|
     ele.hover
-    puts "#{find('.GAJ4KBDCLNC').text}: #{find('.GAJ4KBDCMNC').text}"
-    csv << [count, find(".GAJ4KBDCMNC").text]
+    price = find('.GAJ4KBDCMNC').text
+    puts "#{find('.GAJ4KBDCLNC').text}: #{price}"
+    csv << [count, price]
     count += 1
   end
   return count
