@@ -3,18 +3,18 @@ require 'capybara'
 require 'selenium-webdriver'
 require 'csv'
 
-task :prices, [:origin_arr, :destination_code, :type] => :environment do |t, args|
-  # result = RestClient.get "https://www.google.com/flights/#search;f=#{args.origin_arr.gsub(' ', ',')};t=#{args.destination_code};tt=o;mc=p"
+task :prices, [:origin_arr, :destination_arr, :type] => :environment do |t, args|
+  # result = RestClient.get "https://www.google.com/flights/#search;f=#{args.origin_arr.gsub(' ', ',')};t=#{args.destination_arr.gsub(' ', ',')};tt=o;mc=p"
 
   Capybara.run_server = false
   Capybara.current_driver = :selenium
   Capybara.app_host = "https://www.google.com/flights"
   include Capybara::DSL
 
-  visit "/#search;f=#{args.origin_arr.gsub(' ', ',')};t=#{args.destination_code};#{'tt=o;' if args.type == 'oneway'}mc=p"
+  visit "/#search;f=#{args.origin_arr.gsub(' ', ',')};t=#{args.destination_arr.gsub(' ', ',')};#{'tt=o;' if args.type == 'oneway'}mc=p"
   sleep 2
   starting_num = 0
-  CSV.open("db/prices/#{args.type}/#{args.origin_arr.gsub(' ', ',')}-#{args.destination_code}.csv", "wb") do |csv|
+  CSV.open("db/prices/#{args.type}/#{args.origin_arr.gsub(' ', ',')}-#{args.destination_arr.gsub(' ', ',')}.csv", "wb") do |csv|
     csv << ["Days from today", "Price"]
     count = scrape_prices(csv, starting_num)
     click_next_month
@@ -23,10 +23,10 @@ task :prices, [:origin_arr, :destination_code, :type] => :environment do |t, arg
 
   if args.type == 'oneway'
     visit "https://www.google.com"
-    visit "/#search;f=#{args.destination_code};t=#{args.origin_arr.gsub(' ', ',')};tt=o;mc=p"
+    visit "/#search;f=#{args.destination_arr.gsub(' ', ',')};t=#{args.origin_arr.gsub(' ', ',')};tt=o;mc=p"
     sleep 2
     starting_num = 0
-    CSV.open("db/prices/#{args.type}/#{args.destination_code}-#{args.origin_arr.gsub(' ', ',')}.csv", "wb") do |csv|
+    CSV.open("db/prices/#{args.type}/#{args.destination_arr.gsub(' ', ',')}-#{args.origin_arr.gsub(' ', ',')}.csv", "wb") do |csv|
       csv << ["Days from today", "Price"]
       count = scrape_prices(csv, starting_num)
       click_next_month
