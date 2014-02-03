@@ -22,6 +22,7 @@ task :ping => :environment do
     "OAK",
     "ORD",
     "PHX",
+    "SAN",
     "SEA",
     "SFO",
     "SJC",
