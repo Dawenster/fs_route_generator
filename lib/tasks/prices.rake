@@ -34,6 +34,12 @@ task :prices_for_set_cities => :environment do
   get_prices("SFO SJC OAK", "LAS", "oneway")
   get_prices("SFO SJC OAK", "LAS", "return")
 
+  get_prices("SFO SJC OAK", "HNL", "oneway")
+  get_prices("SFO SJC OAK", "HNL", "return")
+
+  get_prices("SFO SJC OAK", "SAN", "oneway")
+  get_prices("SFO SJC OAK", "SAN", "return")
+
   # New York City
 
   get_prices("JFK LGA EWR", "SFO SJC OAK", "oneway")
@@ -62,6 +68,12 @@ task :prices_for_set_cities => :environment do
 
   get_prices("JFK LGA EWR", "LAS", "oneway")
   get_prices("JFK LGA EWR", "LAS", "return")
+
+  get_prices("JFK LGA EWR", "HNL", "oneway")
+  get_prices("JFK LGA EWR", "HNL", "return")
+
+  get_prices("JFK LGA EWR", "SAN", "oneway")
+  get_prices("JFK LGA EWR", "SAN", "return")
 end
 
 task :prices, [:origin_arr, :destination_arr, :type] => :environment do |t, args|
