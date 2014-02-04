@@ -30,6 +30,7 @@ task :routes_to_scrape, [:origin_code] => :environment do |t, args|
     "LAX",
     "LGA",
     "LGB",
+    "MCO",
     "MDW",
     "MIA",
     "OAK",
@@ -102,7 +103,7 @@ def get_shortcuts(date_array, origin, actual_destination, num_days_count)
 
     begin
       results = hit_matrix(origin.code, actual_destination.code, possible_destinations(actual_destination), date)
-      if results
+      if results.any?
         results.first(100).each do |flight|
           create_flight(flight, origin.code, actual_destination.code, "shortcut")
         end
