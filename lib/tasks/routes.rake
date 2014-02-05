@@ -23,6 +23,7 @@ task :routes_to_scrape, [:origin_code] => :environment do |t, args|
     "DFW",
     "DTW",
     "EWR",
+    "HNL",
     "IAD",
     "IAH",
     "JFK",
