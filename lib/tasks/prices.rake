@@ -40,40 +40,43 @@ task :prices_for_set_cities => :environment do
   get_prices("SFO SJC OAK", "SAN", "oneway")
   get_prices("SFO SJC OAK", "SAN", "return")
 
+  get_prices("SFO SJC OAK", "DEN", "oneway")
+  get_prices("SFO SJC OAK", "DEN", "return")
+
   # New York City
 
-  get_prices("JFK LGA EWR", "SFO SJC OAK", "oneway")
-  get_prices("JFK LGA EWR", "SFO SJC OAK", "return")
+  # get_prices("JFK LGA EWR", "SFO SJC OAK", "oneway")
+  # get_prices("JFK LGA EWR", "SFO SJC OAK", "return")
 
-  get_prices("JFK LGA EWR", "LAX LGB", "oneway")
-  get_prices("JFK LGA EWR", "LAX LGB", "return")
+  # get_prices("JFK LGA EWR", "LAX LGB", "oneway")
+  # get_prices("JFK LGA EWR", "LAX LGB", "return")
 
-  get_prices("JFK LGA EWR", "ATL", "oneway")
-  get_prices("JFK LGA EWR", "ATL", "return")
+  # get_prices("JFK LGA EWR", "ATL", "oneway")
+  # get_prices("JFK LGA EWR", "ATL", "return")
 
-  get_prices("JFK LGA EWR", "ORD MDW", "oneway")
-  get_prices("JFK LGA EWR", "ORD MDW", "return")
+  # get_prices("JFK LGA EWR", "ORD MDW", "oneway")
+  # get_prices("JFK LGA EWR", "ORD MDW", "return")
 
-  get_prices("JFK LGA EWR", "IAD BWI DCA", "oneway")
-  get_prices("JFK LGA EWR", "IAD BWI DCA", "return")
+  # get_prices("JFK LGA EWR", "IAD BWI DCA", "oneway")
+  # get_prices("JFK LGA EWR", "IAD BWI DCA", "return")
 
-  get_prices("JFK LGA EWR", "DFW", "oneway")
-  get_prices("JFK LGA EWR", "DFW", "return")
+  # get_prices("JFK LGA EWR", "DFW", "oneway")
+  # get_prices("JFK LGA EWR", "DFW", "return")
 
-  get_prices("JFK LGA EWR", "SEA", "oneway")
-  get_prices("JFK LGA EWR", "SEA", "return")
+  # get_prices("JFK LGA EWR", "SEA", "oneway")
+  # get_prices("JFK LGA EWR", "SEA", "return")
 
-  get_prices("JFK LGA EWR", "BOS", "oneway")
-  get_prices("JFK LGA EWR", "BOS", "return")
+  # get_prices("JFK LGA EWR", "BOS", "oneway")
+  # get_prices("JFK LGA EWR", "BOS", "return")
 
-  get_prices("JFK LGA EWR", "LAS", "oneway")
-  get_prices("JFK LGA EWR", "LAS", "return")
+  # get_prices("JFK LGA EWR", "LAS", "oneway")
+  # get_prices("JFK LGA EWR", "LAS", "return")
 
-  get_prices("JFK LGA EWR", "HNL", "oneway")
-  get_prices("JFK LGA EWR", "HNL", "return")
+  # get_prices("JFK LGA EWR", "HNL", "oneway")
+  # get_prices("JFK LGA EWR", "HNL", "return")
 
-  get_prices("JFK LGA EWR", "SAN", "oneway")
-  get_prices("JFK LGA EWR", "SAN", "return")
+  # get_prices("JFK LGA EWR", "SAN", "oneway")
+  # get_prices("JFK LGA EWR", "SAN", "return")
 end
 
 task :prices, [:origin_arr, :destination_arr, :type] => :environment do |t, args|
@@ -89,7 +92,7 @@ def get_prices(origin_arr, destination_arr, type)
   if type == "oneway"
     param_variable = "tt=o;"
   else
-    param_variable = "d=2014-02-04;r=2014-02-11;"
+    param_variable = "d=2014-02-07;r=2014-02-14;"
   end
   visit "/#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
   sleep 2
@@ -117,10 +120,10 @@ end
 
 def scrape_prices(csv, starting_num)
   count = starting_num
-  all(".GAJ4KBDCENC").each_with_index do |ele, i|
+  all(".GICUDSOHOC").each_with_index do |ele, i|
     ele.hover
-    price = find('.GAJ4KBDCMNC').text
-    puts "#{find('.GAJ4KBDCLNC').text}: #{price}"
+    price = find('.GICUDSOPOC').text
+    puts "#{find('.GICUDSOOOC').text}: #{price}"
     csv << [count, price]
     count += 1
   end
@@ -128,8 +131,8 @@ def scrape_prices(csv, starting_num)
 end
 
 def click_next_month
-  find(".GAJ4KBDCGKC").click
+  find(".GICUDSOJLC").click
   sleep 1
-  find(".GAJ4KBDCGKC").click
+  find(".GICUDSOJLC").click
   sleep 2
 end
