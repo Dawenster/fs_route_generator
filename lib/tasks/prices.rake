@@ -92,7 +92,7 @@ def get_prices(origin_arr, destination_arr, type)
   if type == "oneway"
     param_variable = "tt=o;"
   else
-    param_variable = "d=2014-02-07;r=2014-02-14;"
+    param_variable = "d=2014-02-09;r=2014-02-16;"
   end
   visit "/#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
   sleep 2
