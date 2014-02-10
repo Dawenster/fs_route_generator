@@ -92,7 +92,7 @@ def get_prices(origin_arr, destination_arr, type)
   if type == "oneway"
     param_variable = "tt=o;"
   else
-    param_variable = "d=2014-02-09;r=2014-02-16;"
+    param_variable = "d=2014-02-10;r=2014-02-17;"
   end
   visit "/#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
   sleep 2
@@ -122,10 +122,19 @@ def scrape_prices(csv, starting_num)
   count = starting_num
   all(".GICUDSOHOC").each_with_index do |ele, i|
     ele.hover
-    price = find('.GICUDSOPOC').text
-    puts "#{find('.GICUDSOOOC').text}: #{price}"
-    csv << [count, price]
-    count += 1
+    begin
+      price = find('.GICUDSOPOC').text
+      # puts "#{find('.GICUDSOOOC').text}: #{price}"
+      csv << [count, price]
+      count += 1
+    rescue
+      puts "Woah... error... gonna sleep for a bit then retry"
+      sleep 5
+      price = find('.GICUDSOPOC').text
+      # puts "#{find('.GICUDSOOOC').text}: #{price}"
+      csv << [count, price]
+      count += 1
+    end
   end
   return count
 end
