@@ -7,41 +7,41 @@ task :prices_for_set_cities => :environment do
   
   # San Fran
 
-  get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway")
-  get_prices("SFO SJC OAK", "JFK LGA EWR", "return")
+  # get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway")
+  # get_prices("SFO SJC OAK", "JFK LGA EWR", "return")
 
-  get_prices("SFO SJC OAK", "LAX LGB", "oneway")
-  get_prices("SFO SJC OAK", "LAX LGB", "return")
+  # get_prices("SFO SJC OAK", "LAX LGB", "oneway")
+  # get_prices("SFO SJC OAK", "LAX LGB", "return")
 
-  get_prices("SFO SJC OAK", "ATL", "oneway")
-  get_prices("SFO SJC OAK", "ATL", "return")
+  # get_prices("SFO SJC OAK", "ATL", "oneway")
+  # get_prices("SFO SJC OAK", "ATL", "return")
 
-  get_prices("SFO SJC OAK", "ORD MDW", "oneway")
-  get_prices("SFO SJC OAK", "ORD MDW", "return")
+  # get_prices("SFO SJC OAK", "ORD MDW", "oneway")
+  # get_prices("SFO SJC OAK", "ORD MDW", "return")
 
-  get_prices("SFO SJC OAK", "IAD BWI DCA", "oneway")
-  get_prices("SFO SJC OAK", "IAD BWI DCA", "return")
+  # get_prices("SFO SJC OAK", "IAD BWI DCA", "oneway")
+  # get_prices("SFO SJC OAK", "IAD BWI DCA", "return")
 
-  get_prices("SFO SJC OAK", "DFW", "oneway")
-  get_prices("SFO SJC OAK", "DFW", "return")
+  # get_prices("SFO SJC OAK", "DFW", "oneway")
+  # get_prices("SFO SJC OAK", "DFW", "return")
 
-  get_prices("SFO SJC OAK", "SEA", "oneway")
-  get_prices("SFO SJC OAK", "SEA", "return")
+  # get_prices("SFO SJC OAK", "SEA", "oneway")
+  # get_prices("SFO SJC OAK", "SEA", "return")
 
-  get_prices("SFO SJC OAK", "BOS", "oneway")
-  get_prices("SFO SJC OAK", "BOS", "return")
+  # get_prices("SFO SJC OAK", "BOS", "oneway")
+  # get_prices("SFO SJC OAK", "BOS", "return")
 
-  get_prices("SFO SJC OAK", "LAS", "oneway")
+  # get_prices("SFO SJC OAK", "LAS", "oneway")
   get_prices("SFO SJC OAK", "LAS", "return")
 
-  get_prices("SFO SJC OAK", "HNL", "oneway")
-  get_prices("SFO SJC OAK", "HNL", "return")
+  # get_prices("SFO SJC OAK", "HNL", "oneway")
+  # get_prices("SFO SJC OAK", "HNL", "return")
 
-  get_prices("SFO SJC OAK", "SAN", "oneway")
-  get_prices("SFO SJC OAK", "SAN", "return")
+  # get_prices("SFO SJC OAK", "SAN", "oneway")
+  # get_prices("SFO SJC OAK", "SAN", "return")
 
-  get_prices("SFO SJC OAK", "DEN", "oneway")
-  get_prices("SFO SJC OAK", "DEN", "return")
+  # get_prices("SFO SJC OAK", "DEN", "oneway")
+  # get_prices("SFO SJC OAK", "DEN", "return")
 
   # New York City
 
@@ -97,11 +97,12 @@ def get_prices(origin_arr, destination_arr, type)
   visit "/#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
   sleep 2
   starting_num = 0
-  CSV.open("db/prices/#{type}/#{origin_arr.gsub(' ', ',')}-#{destination_arr.gsub(' ', ',')}.csv", "wb") do |csv|
+  file_name = "#{type}/#{origin_arr.gsub(' ', ',')}-#{destination_arr.gsub(' ', ',')}"
+  CSV.open("db/prices/#{file_name}.csv", "wb") do |csv|
     csv << ["Days from today", "Price"]
-    count = scrape_prices(csv, starting_num)
+    count = scrape_prices(file_name, csv, starting_num)
     click_next_month
-    scrape_prices(csv, count)
+    scrape_prices(nil, csv, count)
   end
 
   if type == 'oneway'
@@ -109,17 +110,19 @@ def get_prices(origin_arr, destination_arr, type)
     visit "/#search;f=#{destination_arr.gsub(' ', ',')};t=#{origin_arr.gsub(' ', ',')};tt=o;mc=p"
     sleep 2
     starting_num = 0
-    CSV.open("db/prices/#{type}/#{destination_arr.gsub(' ', ',')}-#{origin_arr.gsub(' ', ',')}.csv", "wb") do |csv|
+    file_name = "#{type}/#{destination_arr.gsub(' ', ',')}-#{origin_arr.gsub(' ', ',')}"
+    CSV.open("db/prices/#{file_name}.csv", "wb") do |csv|
       csv << ["Days from today", "Price"]
-      count = scrape_prices(csv, starting_num)
+      count = scrape_prices(file_name, csv, starting_num)
       click_next_month
-      scrape_prices(csv, count)
+      scrape_prices(nil, csv, count)
     end
   end
 end
 
-def scrape_prices(csv, starting_num)
+def scrape_prices(file_name, csv, starting_num)
   count = starting_num
+  puts file_name
   all(".GICUDSOHOC").each_with_index do |ele, i|
     ele.hover
     begin
@@ -130,10 +133,15 @@ def scrape_prices(csv, starting_num)
     rescue
       puts "Woah... error... gonna sleep for a bit then retry"
       sleep 5
-      price = find('.GICUDSOPOC').text
-      # puts "#{find('.GICUDSOOOC').text}: #{price}"
-      csv << [count, price]
-      count += 1
+      begin
+        price = find('.GICUDSOPOC').text
+        # puts "#{find('.GICUDSOOOC').text}: #{price}"
+        csv << [count, price]
+        count += 1
+      rescue
+        puts "Nevermind... can't fix it.  SKIP!"
+        count += 1
+      end
     end
   end
   return count
