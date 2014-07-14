@@ -1,6 +1,6 @@
 require 'rest_client'
-require 'capybara'
-require 'selenium-webdriver'
+# require 'capybara'
+# require 'selenium-webdriver'
 require 'csv'
 
 task :prices_for_set_cities => :environment do
