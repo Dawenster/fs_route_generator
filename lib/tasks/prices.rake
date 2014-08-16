@@ -3,87 +3,89 @@ require 'rest_client'
 # require 'selenium-webdriver'
 require 'csv'
 
-task :prices_for_set_cities => :environment do
+task :prices_for_set_cities, [:stops] => :environment do |t, args|
+
+  stops = args.stops
   
   # San Fran
 
-  # get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway")
-  # get_prices("SFO SJC OAK", "JFK LGA EWR", "return")
+  get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway", stops)
+  get_prices("SFO SJC OAK", "JFK LGA EWR", "return", stops)
 
-  # get_prices("SFO SJC OAK", "LAX LGB", "oneway")
-  # get_prices("SFO SJC OAK", "LAX LGB", "return")
+  get_prices("SFO SJC OAK", "LAX LGB", "oneway", stops)
+  get_prices("SFO SJC OAK", "LAX LGB", "return", stops)
 
-  # get_prices("SFO SJC OAK", "ATL", "oneway")
-  # get_prices("SFO SJC OAK", "ATL", "return")
+  get_prices("SFO SJC OAK", "ATL", "oneway", stops)
+  get_prices("SFO SJC OAK", "ATL", "return", stops)
 
-  # get_prices("SFO SJC OAK", "ORD MDW", "oneway")
-  # get_prices("SFO SJC OAK", "ORD MDW", "return")
+  get_prices("SFO SJC OAK", "ORD MDW", "oneway", stops)
+  get_prices("SFO SJC OAK", "ORD MDW", "return", stops)
 
-  # get_prices("SFO SJC OAK", "IAD BWI DCA", "oneway")
-  # get_prices("SFO SJC OAK", "IAD BWI DCA", "return")
+  get_prices("SFO SJC OAK", "IAD BWI DCA", "oneway", stops)
+  get_prices("SFO SJC OAK", "IAD BWI DCA", "return", stops)
 
-  # get_prices("SFO SJC OAK", "DFW", "oneway")
-  # get_prices("SFO SJC OAK", "DFW", "return")
+  get_prices("SFO SJC OAK", "DFW", "oneway", stops)
+  get_prices("SFO SJC OAK", "DFW", "return", stops)
 
-  # get_prices("SFO SJC OAK", "SEA", "oneway")
-  # get_prices("SFO SJC OAK", "SEA", "return")
+  get_prices("SFO SJC OAK", "SEA", "oneway", stops)
+  get_prices("SFO SJC OAK", "SEA", "return", stops)
 
-  # get_prices("SFO SJC OAK", "BOS", "oneway")
-  # get_prices("SFO SJC OAK", "BOS", "return")
+  get_prices("SFO SJC OAK", "BOS", "oneway", stops)
+  get_prices("SFO SJC OAK", "BOS", "return", stops)
 
-  # get_prices("SFO SJC OAK", "LAS", "oneway")
-  # get_prices("SFO SJC OAK", "LAS", "return")
+  get_prices("SFO SJC OAK", "LAS", "oneway", stops)
+  get_prices("SFO SJC OAK", "LAS", "return", stops)
 
-  get_prices("SFO SJC OAK", "HNL", "oneway")
-  # get_prices("SFO SJC OAK", "HNL", "return")
+  get_prices("SFO SJC OAK", "HNL", "oneway", stops)
+  get_prices("SFO SJC OAK", "HNL", "return", stops)
 
-  # get_prices("SFO SJC OAK", "SAN", "oneway")
-  # get_prices("SFO SJC OAK", "SAN", "return")
+  get_prices("SFO SJC OAK", "SAN", "oneway", stops)
+  get_prices("SFO SJC OAK", "SAN", "return", stops)
 
-  # get_prices("SFO SJC OAK", "DEN", "oneway")
-  # get_prices("SFO SJC OAK", "DEN", "return")
+  get_prices("SFO SJC OAK", "DEN", "oneway", stops)
+  get_prices("SFO SJC OAK", "DEN", "return", stops)
 
   # New York City
 
-  # get_prices("JFK LGA EWR", "SFO SJC OAK", "oneway")
-  # get_prices("JFK LGA EWR", "SFO SJC OAK", "return")
+  # get_prices("JFK LGA EWR", "SFO SJC OAK", "oneway", stops)
+  # get_prices("JFK LGA EWR", "SFO SJC OAK", "return", stops)
 
-  # get_prices("JFK LGA EWR", "LAX LGB", "oneway")
-  # get_prices("JFK LGA EWR", "LAX LGB", "return")
+  # get_prices("JFK LGA EWR", "LAX LGB", "oneway", stops)
+  # get_prices("JFK LGA EWR", "LAX LGB", "return", stops)
 
-  # get_prices("JFK LGA EWR", "ATL", "oneway")
-  # get_prices("JFK LGA EWR", "ATL", "return")
+  # get_prices("JFK LGA EWR", "ATL", "oneway", stops)
+  # get_prices("JFK LGA EWR", "ATL", "return", stops)
 
-  # get_prices("JFK LGA EWR", "ORD MDW", "oneway")
-  # get_prices("JFK LGA EWR", "ORD MDW", "return")
+  # get_prices("JFK LGA EWR", "ORD MDW", "oneway", stops)
+  # get_prices("JFK LGA EWR", "ORD MDW", "return", stops)
 
-  # get_prices("JFK LGA EWR", "IAD BWI DCA", "oneway")
-  # get_prices("JFK LGA EWR", "IAD BWI DCA", "return")
+  # get_prices("JFK LGA EWR", "IAD BWI DCA", "oneway", stops)
+  # get_prices("JFK LGA EWR", "IAD BWI DCA", "return", stops)
 
-  # get_prices("JFK LGA EWR", "DFW", "oneway")
-  # get_prices("JFK LGA EWR", "DFW", "return")
+  # get_prices("JFK LGA EWR", "DFW", "oneway", stops)
+  # get_prices("JFK LGA EWR", "DFW", "return", stops)
 
-  # get_prices("JFK LGA EWR", "SEA", "oneway")
-  # get_prices("JFK LGA EWR", "SEA", "return")
+  # get_prices("JFK LGA EWR", "SEA", "oneway", stops)
+  # get_prices("JFK LGA EWR", "SEA", "return", stops)
 
-  # get_prices("JFK LGA EWR", "BOS", "oneway")
-  # get_prices("JFK LGA EWR", "BOS", "return")
+  # get_prices("JFK LGA EWR", "BOS", "oneway", stops)
+  # get_prices("JFK LGA EWR", "BOS", "return", stops)
 
-  # get_prices("JFK LGA EWR", "LAS", "oneway")
-  # get_prices("JFK LGA EWR", "LAS", "return")
+  # get_prices("JFK LGA EWR", "LAS", "oneway", stops)
+  # get_prices("JFK LGA EWR", "LAS", "return", stops)
 
-  # get_prices("JFK LGA EWR", "HNL", "oneway")
-  # get_prices("JFK LGA EWR", "HNL", "return")
+  # get_prices("JFK LGA EWR", "HNL", "oneway", stops)
+  # get_prices("JFK LGA EWR", "HNL", "return", stops)
 
-  # get_prices("JFK LGA EWR", "SAN", "oneway")
-  # get_prices("JFK LGA EWR", "SAN", "return")
+  # get_prices("JFK LGA EWR", "SAN", "oneway", stops)
+  # get_prices("JFK LGA EWR", "SAN", "return", stops)
 end
 
 task :prices, [:origin_arr, :destination_arr, :type] => :environment do |t, args|
   get_prices(args.origin_arr, args.destination_arr, args.type)
 end
 
-def get_prices(origin_arr, destination_arr, type)
+def get_prices(origin_arr, destination_arr, type, stops)
   Capybara.run_server = false
   Capybara.current_driver = :selenium
   Capybara.app_host = "https://www.google.com/flights"
@@ -94,7 +96,8 @@ def get_prices(origin_arr, destination_arr, type)
   else
     param_variable = "d=2014-02-10;r=2014-02-17;"
   end
-  visit "/?curr=USD#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
+
+  visit "/?curr=USD#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p;#{'s=' + stops if stops}"
   sleep 2
   starting_num = 0
   file_name = "#{type}/#{origin_arr.gsub(' ', ',')}-#{destination_arr.gsub(' ', ',')}"
