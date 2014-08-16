@@ -34,8 +34,8 @@ task :prices_for_set_cities => :environment do
   # get_prices("SFO SJC OAK", "LAS", "oneway")
   # get_prices("SFO SJC OAK", "LAS", "return")
 
-  # get_prices("SFO SJC OAK", "HNL", "oneway")
-  get_prices("SFO SJC OAK", "HNL", "return")
+  get_prices("SFO SJC OAK", "HNL", "oneway")
+  # get_prices("SFO SJC OAK", "HNL", "return")
 
   # get_prices("SFO SJC OAK", "SAN", "oneway")
   # get_prices("SFO SJC OAK", "SAN", "return")
@@ -94,7 +94,7 @@ def get_prices(origin_arr, destination_arr, type)
   else
     param_variable = "d=2014-02-10;r=2014-02-17;"
   end
-  visit "/#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
+  visit "/?curr=USD#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p"
   sleep 2
   starting_num = 0
   file_name = "#{type}/#{origin_arr.gsub(' ', ',')}-#{destination_arr.gsub(' ', ',')}"
@@ -107,7 +107,7 @@ def get_prices(origin_arr, destination_arr, type)
 
   if type == 'oneway'
     visit "https://www.google.com"
-    visit "/#search;f=#{destination_arr.gsub(' ', ',')};t=#{origin_arr.gsub(' ', ',')};tt=o;mc=p"
+    visit "/?curr=USD#search;f=#{destination_arr.gsub(' ', ',')};t=#{origin_arr.gsub(' ', ',')};tt=o;mc=p"
     sleep 2
     starting_num = 0
     file_name = "#{type}/#{destination_arr.gsub(' ', ',')}-#{origin_arr.gsub(' ', ',')}"
