@@ -32,10 +32,10 @@ task :prices_for_set_cities => :environment do
   # get_prices("SFO SJC OAK", "BOS", "return")
 
   # get_prices("SFO SJC OAK", "LAS", "oneway")
-  get_prices("SFO SJC OAK", "LAS", "return")
+  # get_prices("SFO SJC OAK", "LAS", "return")
 
   # get_prices("SFO SJC OAK", "HNL", "oneway")
-  # get_prices("SFO SJC OAK", "HNL", "return")
+  get_prices("SFO SJC OAK", "HNL", "return")
 
   # get_prices("SFO SJC OAK", "SAN", "oneway")
   # get_prices("SFO SJC OAK", "SAN", "return")
@@ -123,10 +123,10 @@ end
 def scrape_prices(file_name, csv, starting_num)
   count = starting_num
   puts file_name
-  all(".GICUDSOHOC").each_with_index do |ele, i|
+  all(".GFYY1SVF0C").each_with_index do |ele, i|
     ele.hover
     begin
-      price = find('.GICUDSOPOC').text
+      price = find('.GFYY1SVN0C').text
       # puts "#{find('.GICUDSOOOC').text}: #{price}"
       csv << [count, price]
       count += 1
@@ -134,7 +134,7 @@ def scrape_prices(file_name, csv, starting_num)
       puts "Woah... error... gonna sleep for a bit then retry"
       sleep 5
       begin
-        price = find('.GICUDSOPOC').text
+        price = find('.GFYY1SVN0C').text
         # puts "#{find('.GICUDSOOOC').text}: #{price}"
         csv << [count, price]
         count += 1
@@ -148,8 +148,8 @@ def scrape_prices(file_name, csv, starting_num)
 end
 
 def click_next_month
-  find(".GICUDSOJLC").click
+  find(".GFYY1SVKYC").click
   sleep 1
-  find(".GICUDSOJLC").click
+  find(".GFYY1SVKYC").click
   sleep 2
 end
