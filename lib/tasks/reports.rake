@@ -23,6 +23,9 @@ task :load_csvs => :environment do
 end
 
 task :generate_blog_data, [:departure_city] => :environment do |t, args|
+  puts "************* HAVE YOU CHECKED THE HARD-CODED DATE??!!?! *****************"
+  puts "************* IT'S IN THE GET SHORTCUT METHOD!!!!!!!!!!! *****************"
+
   departure_city = args.departure_city
 
   cities.each do |arrival_city, codes|

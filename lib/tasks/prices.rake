@@ -6,6 +6,9 @@ require 'csv'
 task :prices_for_set_cities, [:stops] => :environment do |t, args|
 
   stops = args.stops
+
+  puts "************* HAVE YOU CHECKED THE HARD-CODED DATE??!!?! *****************"
+  puts "************* IT'S IN THE RETURN FLIGHT SCRAPE!!!!!!!!!! *****************"
   
   # San Fran
 
@@ -94,7 +97,7 @@ def get_prices(origin_arr, destination_arr, type, stops)
   if type == "oneway"
     param_variable = "tt=o;"
   else
-    param_variable = "d=2014-08-17;r=2014-08-24;"
+    param_variable = "d=2014-08-18;r=2014-08-25;"
   end
 
   visit "/?curr=USD#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p;#{'s=' + stops if stops}"
