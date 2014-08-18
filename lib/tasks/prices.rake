@@ -9,7 +9,7 @@ task :prices_for_set_cities, [:stops] => :environment do |t, args|
   
   # San Fran
 
-  get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway", stops)
+  # get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway", stops)
   get_prices("SFO SJC OAK", "JFK LGA EWR", "return", stops)
 
   get_prices("SFO SJC OAK", "LAX LGB", "oneway", stops)
@@ -94,7 +94,7 @@ def get_prices(origin_arr, destination_arr, type, stops)
   if type == "oneway"
     param_variable = "tt=o;"
   else
-    param_variable = "d=2014-02-10;r=2014-02-17;"
+    param_variable = "d=2014-08-17;r=2014-08-24;"
   end
 
   visit "/?curr=USD#search;f=#{origin_arr.gsub(' ', ',')};t=#{destination_arr.gsub(' ', ',')};#{param_variable}mc=p;#{'s=' + stops if stops}"
@@ -110,7 +110,7 @@ def get_prices(origin_arr, destination_arr, type, stops)
 
   if type == 'oneway'
     visit "https://www.google.com"
-    visit "/?curr=USD#search;f=#{destination_arr.gsub(' ', ',')};t=#{origin_arr.gsub(' ', ',')};tt=o;mc=p"
+    visit "/?curr=USD#search;f=#{destination_arr.gsub(' ', ',')};t=#{origin_arr.gsub(' ', ',')};tt=o;mc=p;#{'s=' + stops if stops}"
     sleep 2
     starting_num = 0
     file_name = "#{type}/#{destination_arr.gsub(' ', ',')}-#{origin_arr.gsub(' ', ',')}"
