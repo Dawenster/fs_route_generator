@@ -13,40 +13,40 @@ task :prices_for_set_cities, [:stops] => :environment do |t, args|
   # San Fran
 
   # get_prices("SFO SJC OAK", "JFK LGA EWR", "oneway", stops)
-  get_prices("SFO SJC OAK", "JFK LGA EWR", "return", stops)
+  # get_prices("SFO SJC OAK", "JFK LGA EWR", "return", stops)
 
-  get_prices("SFO SJC OAK", "LAX LGB", "oneway", stops)
-  get_prices("SFO SJC OAK", "LAX LGB", "return", stops)
+  # get_prices("SFO SJC OAK", "LAX LGB", "oneway", stops)
+  # get_prices("SFO SJC OAK", "LAX LGB", "return", stops)
 
-  get_prices("SFO SJC OAK", "ATL", "oneway", stops)
-  get_prices("SFO SJC OAK", "ATL", "return", stops)
+  # get_prices("SFO SJC OAK", "ATL", "oneway", stops)
+  # get_prices("SFO SJC OAK", "ATL", "return", stops)
 
-  get_prices("SFO SJC OAK", "ORD MDW", "oneway", stops)
-  get_prices("SFO SJC OAK", "ORD MDW", "return", stops)
+  # get_prices("SFO SJC OAK", "ORD MDW", "oneway", stops)
+  # get_prices("SFO SJC OAK", "ORD MDW", "return", stops)
 
-  get_prices("SFO SJC OAK", "IAD BWI DCA", "oneway", stops)
-  get_prices("SFO SJC OAK", "IAD BWI DCA", "return", stops)
+  # get_prices("SFO SJC OAK", "IAD BWI DCA", "oneway", stops)
+  # get_prices("SFO SJC OAK", "IAD BWI DCA", "return", stops)
 
-  get_prices("SFO SJC OAK", "DFW", "oneway", stops)
-  get_prices("SFO SJC OAK", "DFW", "return", stops)
+  # get_prices("SFO SJC OAK", "DFW", "oneway", stops)
+  # get_prices("SFO SJC OAK", "DFW", "return", stops)
 
-  get_prices("SFO SJC OAK", "SEA", "oneway", stops)
-  get_prices("SFO SJC OAK", "SEA", "return", stops)
+  # get_prices("SFO SJC OAK", "SEA", "oneway", stops)
+  # get_prices("SFO SJC OAK", "SEA", "return", stops)
 
-  get_prices("SFO SJC OAK", "BOS", "oneway", stops)
-  get_prices("SFO SJC OAK", "BOS", "return", stops)
+  # get_prices("SFO SJC OAK", "BOS", "oneway", stops)
+  # get_prices("SFO SJC OAK", "BOS", "return", stops)
 
-  get_prices("SFO SJC OAK", "LAS", "oneway", stops)
-  get_prices("SFO SJC OAK", "LAS", "return", stops)
+  # get_prices("SFO SJC OAK", "LAS", "oneway", stops)
+  # get_prices("SFO SJC OAK", "LAS", "return", stops)
 
-  get_prices("SFO SJC OAK", "HNL", "oneway", stops)
-  get_prices("SFO SJC OAK", "HNL", "return", stops)
+  # get_prices("SFO SJC OAK", "HNL", "oneway", stops)
+  # get_prices("SFO SJC OAK", "HNL", "return", stops)
 
-  get_prices("SFO SJC OAK", "SAN", "oneway", stops)
-  get_prices("SFO SJC OAK", "SAN", "return", stops)
+  # get_prices("SFO SJC OAK", "SAN", "oneway", stops)
+  # get_prices("SFO SJC OAK", "SAN", "return", stops)
 
-  get_prices("SFO SJC OAK", "DEN", "oneway", stops)
-  get_prices("SFO SJC OAK", "DEN", "return", stops)
+  # get_prices("SFO SJC OAK", "DEN", "oneway", stops)
+  # get_prices("SFO SJC OAK", "DEN", "return", stops)
 
   # New York City
 
@@ -82,6 +82,9 @@ task :prices_for_set_cities, [:stops] => :environment do |t, args|
 
   # get_prices("JFK LGA EWR", "SAN", "oneway", stops)
   # get_prices("JFK LGA EWR", "SAN", "return", stops)
+
+  # get_prices("JFK LGA EWR", "DEN", "oneway", stops)
+  get_prices("JFK LGA EWR", "DEN", "return", stops)
 end
 
 task :prices, [:origin_arr, :destination_arr, :type] => :environment do |t, args|
